@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { prepareHeaders } from "./Helper";
 
 interface user {
     name: string,
@@ -7,11 +8,14 @@ interface user {
     dob: string
 }
 
+const defaultUserData = { name: "", password: "", email: "", dob: "" }
+
 const styling = "w-full rounded-md text-base py-2 px-4 mb-4 focus:outline-none font-serif";
 const CreateUser = (props: any) => {
-    const [userData, setUserData] = useState<user>({ name: "", password: "", email: "", dob: "" })
+    const [userData, setUserData] = useState<user>({ ...defaultUserData })
     const [loader, setLoader] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
+    const [successToast, setSuccessToast] = useState<string>("");
 
     const handleOnChange = (value: string, section: string) => {
         let tempData = { ...userData };
@@ -46,9 +50,23 @@ const CreateUser = (props: any) => {
         const { success, error } = validateDetails();
         if (success) {
             setLoader(true);
-            await fetch("api/create").then(() => {
-                setLoader(false)
+            await fetch("/api/user/getUserByEmail?email=" + userData.email, { method: "GET" }).then((res) => res.json()).then(async (response) => {
+                if (response.success) {
+                    setError("User already exists")
+                    setLoader(false)
+                } else {
+                    await fetch("/api/user/create", prepareHeaders("POST", userData)).then((item) => item.json()).then((result) => {
+                        if (result.success) {
+                            setSuccessToast("User Created Successfully !")
+                            setUserData({ ...defaultUserData })
+                        } else {
+                            setError("Could not create user !")
+                        }
+                        setLoader(false);
+                    })
+                }
             })
+
         } else {
             setError(error)
         }
@@ -57,8 +75,14 @@ const CreateUser = (props: any) => {
 
     const updateUserAction = async () => {
         setLoader(true);
-        await fetch("api/create").then(() => {
-            setLoader(false)
+        await fetch("/api/user/update", prepareHeaders("POST", userData)).then((item) => item.json()).then((result) => {
+            if (result.success) {
+                setSuccessToast("User Updated Successfully")
+                setUserData({ ...defaultUserData })
+            } else {
+                setError("Details could not be updated")
+            }
+            setLoader(false);
         })
     }
 
@@ -68,9 +92,29 @@ const CreateUser = (props: any) => {
         }
     }, [])
 
+    useEffect(() => {
+        if (successToast !== "") {
+            setTimeout(() => {
+                setSuccessToast("")
+            }, 5000)
+        }
+    }, [successToast])
+
+    useEffect(() => {
+        if (error !== "") {
+            setTimeout(() => {
+                setError("")
+            }, 5000)
+        }
+    }, [error])
+
     return <div className="w-7/12 p-8 bg-white bg-opacity-90 shadow-lg rounded-lg">
         {error !== "" && <div className="w-full bg-red-200 py-2 mb-2">
             <p className="text-xl text-center">{error}</p>
+        </div>}
+
+        {successToast !== "" && <div className="w-full bg-green-200 py-2 mb-2">
+            <p className="text-xl text-center">{successToast}</p>
         </div>}
 
         <p className="text-base mb-2">Name</p>
