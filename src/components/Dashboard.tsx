@@ -1,11 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useCallback, useState } from "react";
 import { AddIcon, ArrowIcon } from "./assets/Icon";
 import ViewUsers from "./ViewUsers";
 import CreateUser from "./CreateUser";
-
-// const activeClassStyle = "px-6 py-3 bg-white text-blue-500 rounded-lg transition-colors duration-300 focus:outline-none"
-// const buttonClass = "px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300 focus:outline-none"
 
 const Dashboard = () => {
 
