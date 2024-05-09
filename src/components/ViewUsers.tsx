@@ -46,39 +46,39 @@ const ViewUsers: React.FC = () => {
 
     return (
         (editItem && Object.keys(editItem).length > 0) ? <CreateUser data={editItem} /> :
-            <div className="w-7/12 p-8 bg-white bg-opacity-90 shadow-lg rounded-lg">
-
-                <table className="w-full max-h-[400px] overflow-y-auto">
-                    <thead>
-                        <tr className="text-left">
-                            <th className="px-4 py-2 text-xl">S.No</th>
-                            <th className="px-4 py-2 text-xl">Name</th>
-                            <th className="px-4 py-2 text-xl">Email</th>
-                            <th className="px-4 py-2 text-xl">Password</th>
-                            <th className="px-4 py-2 text-xl">DOB</th>
-                            <th className="px-4 py-2 text-xl">Action</th>
-                            {/* <th className="px-4 py-2">Delete</th> */}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {loader ? <Skeleton /> : data.map((item, index) => (
-                            <tr key={index} className={index % 2 === 0 ? "bg-gray-300" : ""}>
-                                <td className="px-4 py-2 text-base">{index + 1}</td>
-                                <td className="px-4 py-2 text-base">{item.name}</td>
-                                <td className="px-4 py-2 text-base">{item.email}</td>
-                                <td className="px-4 py-2 text-base">{item.password}</td>
-                                <td className="px-4 py-2 text-base">{item.dob}</td>
-                                <td className="px-4 py-2 text-base">{
-                                    <div className="flex flex-row justify-around">
-                                        <span onClick={() => handleEdit(item)}><EditIcon /></span>
-                                        <span onClick={() => setModalIsOpen(index)}><DeleteIcon /></span>
-                                    </div>
-                                }</td>
+            <div className="w-7/12 p-8 bg-white bg-opacity-90 shadow-lg rounded-lg max-h-[60%] overflow-hidden">
+                <div className="table-container">
+                    <table className="w-full">
+                        <thead>
+                            <tr className="text-left">
+                                <th className="px-4 py-2 text-xl">S.No</th>
+                                <th className="px-4 py-2 text-xl">Name</th>
+                                <th className="px-4 py-2 text-xl">Email</th>
+                                <th className="px-4 py-2 text-xl">Password</th>
+                                <th className="px-4 py-2 text-xl">DOB</th>
+                                <th className="px-4 py-2 text-xl">Action</th>
+                                {/* <th className="px-4 py-2">Delete</th> */}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-
+                        </thead>
+                        <tbody>
+                            {loader ? <Skeleton /> : data.map((item, index) => (
+                                <tr key={index} className={index % 2 === 0 ? "bg-gray-300" : ""}>
+                                    <td className="px-4 py-2 text-base">{index + 1}</td>
+                                    <td className="px-4 py-2 text-base">{item.name}</td>
+                                    <td className="px-4 py-2 text-base">{item.email}</td>
+                                    <td className="px-4 py-2 text-base">{item.password}</td>
+                                    <td className="px-4 py-2 text-base">{item.dob}</td>
+                                    <td className="px-4 py-2 text-base">{
+                                        <div className="flex flex-row justify-around">
+                                            <span onClick={() => handleEdit(item)}><EditIcon /></span>
+                                            <span onClick={() => setModalIsOpen(index)}><DeleteIcon /></span>
+                                        </div>
+                                    }</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
                 {/**Modal component starts here */}
                 {modalIsOpen !== -1 ? <div className="fixed z-10 inset-0 overflow-y-auto">
                     <div className="flex items-center justify-center min-h-screen">
