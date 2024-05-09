@@ -19,3 +19,14 @@ code {
 .max-height-400 {
   max-height: 400px;
 }
+
+.table-container {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.table-container thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
