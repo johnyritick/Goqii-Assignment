@@ -55,7 +55,9 @@ const ViewUsers: React.FC = () => {
             if (response.success) {
                 if (response.users.length > 0) {
                     setData(response.users)
-                }
+                } else {
+                    setData([]);
+                } 
 
             } else {
                 setError("User Details could not be fetched");
@@ -73,6 +75,7 @@ const ViewUsers: React.FC = () => {
         await fetch("/api/user/delete", prepareHeaders("POST", params)).then((res) => res.json()).then((response: any) => {
             if (response.success) {
                 setSuccessToast("User Deleted Successfully");
+                getUsersData()
             } else {
                 setError("User could not be deleted");
             }
